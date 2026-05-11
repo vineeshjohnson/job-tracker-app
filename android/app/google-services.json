@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "333454900953",
+    "project_id": "job-tracker-app-db889",
+    "storage_bucket": "job-tracker-app-db889.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333454900953:android:01ee7e3ca4b9638f50c8c8",
+        "android_client_info": {
+          "package_name": "com.example.job_tracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeeUhPAL5KEBsZWvP6jiNUSJXciU6monA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:333454900953:android:8c20795e1777aa9f50c8c8",
+        "android_client_info": {
+          "package_name": "com.vinish.jobtracker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeeUhPAL5KEBsZWvP6jiNUSJXciU6monA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
