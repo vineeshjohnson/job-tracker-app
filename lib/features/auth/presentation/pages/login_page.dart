@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_tracker/features/home/presentation/pages/home_page.dart';
 
 import '../../../../app/theme/app_text_styles.dart';
 import '../../../../core/constants/app_sizes.dart';
@@ -35,21 +36,27 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is AuthFailure) {
-              emailController.clear();
-              passwordController.clear();
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
-            }
+         listener: (context, state) {
 
-            if (state is AuthSuccess) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text("Login Success")));
-            }
-          },
+  if (state is AuthFailure) {
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(state.message),
+      ),
+    );
+  }
+
+  if (state is AuthSuccess || state is Authenticated) {
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const HomePage(),
+      ),
+    );
+  }
+},
 
           builder: (context, state) {
             return Padding(

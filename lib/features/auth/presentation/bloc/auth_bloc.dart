@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:job_tracker/features/auth/domain/usecases/check_auth_status_usecase.dart';
+import '../../domain/usecases/logout_usecase.dart';
 import '../../domain/usecases/login_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -9,9 +10,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   final LoginUseCase loginUseCase;
 
-  AuthBloc({
-    required this.loginUseCase,
-  }) : super(AuthInitial()) {
+  final CheckAuthStatusUseCase checkAuthStatusUseCase;
+final LogoutUseCase logoutUseCase;
+AuthBloc({
+  required this.loginUseCase,
+  required this.checkAuthStatusUseCase,
+  required this.logoutUseCase,
+}) : super(AuthInitial()) {
+
+on<LogoutRequested>((event, emit) async {
+
+  await logoutUseCase();
+
+  emit(Unauthenticated());
+});
+
 
     on<LoginRequested>((event, emit) async {
 
@@ -41,6 +54,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             "Something went wrong",
           ),
         );
+      }
+    });
+
+    on<CheckAuthStatus>((event, emit) {
+
+      final isLoggedIn = checkAuthStatusUseCase();
+
+      if (isLoggedIn) {
+
+        emit(Authenticated());
+
+      } else {
+
+        emit(Unauthenticated());
       }
     });
   }
