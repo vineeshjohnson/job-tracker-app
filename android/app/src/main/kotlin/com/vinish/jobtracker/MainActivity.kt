@@ -1,4 +1,4 @@
-package com.example.job_tracker
+package com.vinish.jobtracker
 
 import io.flutter.embedding.android.FlutterActivity
 
