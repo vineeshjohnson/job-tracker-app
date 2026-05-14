@@ -8,4 +8,10 @@ abstract class AuthRepository {
   bool isLoggedIn();
 
   Future<void> logout();
+  Future<void> register({
+
+  required String email,
+
+  required String password,
+});
 }

@@ -37,6 +37,7 @@ class JobRepositoryImpl implements JobRepository {
       createdAt: job.createdAt,
 
       updatedAt: job.updatedAt,
+      userId: job.userId
     );
 
     await remoteDataSource.addJob(jobModel);
@@ -45,5 +46,25 @@ class JobRepositoryImpl implements JobRepository {
 Stream<List<JobEntity>> getJobs() {
 
   return remoteDataSource.getJobs();
+}
+
+@override
+Future<void> deleteJob(String jobId) async {
+
+  await remoteDataSource.deleteJob(jobId);
+}
+@override
+Future<void> updateJobStatus({
+
+  required String jobId,
+
+  required String status,
+
+}) async {
+
+  await remoteDataSource.updateJobStatus(
+    jobId: jobId,
+    status: status,
+  );
 }
 }

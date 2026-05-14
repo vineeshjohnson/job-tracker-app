@@ -1,5 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:job_tracker/features/home/domain/usecases/delete_job_usecase.dart';
 import 'package:job_tracker/features/home/domain/usecases/get_jobs_usecase.dart';
+import 'package:job_tracker/features/home/domain/usecases/update_job_status_usecase.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/entities/job_entity.dart';
@@ -8,46 +10,47 @@ import 'job_event.dart';
 import 'job_state.dart';
 
 class JobBloc extends Bloc<JobEvent, JobState> {
-
   final AddJobUseCase addJobUseCase;
   final GetJobsUseCase getJobsUseCase;
-
+  final DeleteJobUseCase deleteJobUseCase;
+  final UpdateJobStatusUseCase updateJobStatusUseCase;
   JobBloc({
-  required this.addJobUseCase,
-  required this.getJobsUseCase,
-}) : super(JobInitial()) {
+    required this.addJobUseCase,
+    required this.getJobsUseCase,
+    required this.deleteJobUseCase,
+    required this.updateJobStatusUseCase,
+  }) : super(JobInitial()) {
+    on<GetJobsRequested>((event, emit) async {
+      emit(JobLoading());
 
-on<GetJobsRequested>((event, emit) async {
+      await emit.forEach(
+        getJobsUseCase(),
 
-  emit(JobLoading());
+        onData: (jobs) {
+          return JobsLoaded(jobs);
+        },
 
-  await emit.forEach(
+        onError: (error, stackTrace) {
+          return JobFailure(error.toString());
+        },
+      );
+    });
 
-    getJobsUseCase(),
-
-    onData: (jobs) {
-
-      return JobsLoaded(jobs);
-    },
-
-    onError: (error, stackTrace) {
-
-      return JobFailure(error.toString());
-    },
-  );
-});
-
+    on<DeleteJobRequested>((event, emit) async {
+      try {
+        await deleteJobUseCase(event.jobId);
+      } catch (e) {
+        emit(JobFailure("Failed to delete job"));
+      }
+    });
 
     on<AddJobRequested>((event, emit) async {
-
       emit(JobLoading());
 
       try {
-
         final now = DateTime.now();
 
         final job = JobEntity(
-
           id: const Uuid().v4(),
 
           companyName: event.companyName,
@@ -69,19 +72,21 @@ on<GetJobsRequested>((event, emit) async {
           createdAt: now,
 
           updatedAt: now,
+          userId: event.userId,
         );
-
+        print(job.userId);
         await addJobUseCase(job);
 
         emit(JobSuccess());
-
       } catch (e) {
-
-        emit(
-          JobFailure(
-            e.toString(),
-          ),
-        );
+        emit(JobFailure(e.toString()));
+      }
+    });
+    on<UpdateJobStatusRequested>((event, emit) async {
+      try {
+        await updateJobStatusUseCase(jobId: event.jobId, status: event.status);
+      } catch (e) {
+        emit(JobFailure("Failed to update status"));
       }
     });
   }

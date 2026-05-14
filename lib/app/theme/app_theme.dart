@@ -42,6 +42,26 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     ),
-    textTheme: GoogleFonts.aDLaMDisplayTextTheme(),
+    textTheme: GoogleFonts.aDLaMDisplayTextTheme(ThemeData.light().textTheme),
+  );
+
+  static ThemeData darkTheme = ThemeData(
+    brightness: Brightness.dark,
+
+    scaffoldBackgroundColor: const Color(0xFF121212),
+
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Color(0xFF1E1E1E),
+      elevation: 0,
+    ),
+
+    colorScheme: ColorScheme.dark(primary: Colors.blue),
+
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      backgroundColor: Colors.blue,
+    ),
+
+    cardColor: const Color(0xFF1E1E1E),
+    textTheme: GoogleFonts.aDLaMDisplayTextTheme(ThemeData.dark().textTheme),
   );
 }

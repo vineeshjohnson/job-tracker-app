@@ -9,6 +9,7 @@ import '../../../../core/widgets/custom_textfield.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import 'register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -36,80 +37,88 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: SafeArea(
         child: BlocConsumer<AuthBloc, AuthState>(
-         listener: (context, state) {
+          listener: (context, state) {
+            if (state is AuthFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            }
 
-  if (state is AuthFailure) {
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(state.message),
-      ),
-    );
-  }
-
-  if (state is AuthSuccess || state is Authenticated) {
-
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const HomePage(),
-      ),
-    );
-  }
-},
+            if (state is AuthSuccess || state is Authenticated) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => const HomePage()),
+              );
+            }
+          },
 
           builder: (context, state) {
-            return Padding(
-              padding: const EdgeInsets.all(AppSizes.padding),
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(AppSizes.padding),
 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
 
-                children: [
-                  const SizedBox(height: 60),
+                  children: [
+                    const SizedBox(height: 60),
 
-                  Text("Welcome Back 👋", style: AppTextStyles.headingLarge),
+                    Text("Welcome Back 👋", style: AppTextStyles.headingLarge),
 
-                  const SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
-                  Text("Login to continue", style: AppTextStyles.bodyMedium),
+                    Text("Login to continue", style: AppTextStyles.bodyMedium),
 
-                  const SizedBox(height: 40),
+                    const SizedBox(height: 40),
 
-                  CustomTextField(
-                    controller: emailController,
-                    hintText: "Email",
-                    keyboardType: TextInputType.emailAddress,
-                    prefixIcon: const Icon(Icons.email_outlined),
-                  ),
+                    CustomTextField(
+                      controller: emailController,
+                      hintText: "Email",
+                      keyboardType: TextInputType.emailAddress,
+                      prefixIcon: const Icon(Icons.email_outlined),
+                    ),
 
-                  const SizedBox(height: 20),
+                    const SizedBox(height: 20),
 
-                  CustomTextField(
-                    controller: passwordController,
-                    hintText: "Password",
-                    obscureText: true,
-                    prefixIcon: const Icon(Icons.lock_outline),
-                  ),
+                    CustomTextField(
+                      controller: passwordController,
+                      hintText: "Password",
+                      obscureText: true,
+                      prefixIcon: const Icon(Icons.lock_outline),
+                    ),
 
-                  const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 
-                  CustomButton(
-                    text: "Login",
+                    CustomButton(
+                      text: "Login",
 
-                    isLoading: state is AuthLoading,
+                      isLoading: state is AuthLoading,
 
-                    onPressed: () {
-                      context.read<AuthBloc>().add(
-                        LoginRequested(
-                          email: emailController.text.trim(),
+                      onPressed: () {
+                        context.read<AuthBloc>().add(
+                          LoginRequested(
+                            email: emailController.text.trim(),
 
-                          password: passwordController.text.trim(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                            password: passwordController.text.trim(),
+                          ),
+                        );
+                      },
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+
+                          MaterialPageRoute(
+                            builder: (_) => const RegisterPage(),
+                          ),
+                        );
+                      },
+
+                      child: const Text("Don't have an account? Register"),
+                    ),
+                  ],
+                ),
               ),
             );
           },

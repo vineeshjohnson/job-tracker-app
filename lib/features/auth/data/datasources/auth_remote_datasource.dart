@@ -22,4 +22,21 @@ class AuthRemoteDataSource {
 
   await firebaseAuth.signOut();
 }
+
+
+Future<void> register({
+
+  required String email,
+
+  required String password,
+
+}) async {
+
+  await firebaseAuth.createUserWithEmailAndPassword(
+
+    email: email,
+
+    password: password,
+  );
+}
 }

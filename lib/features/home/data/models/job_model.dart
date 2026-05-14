@@ -23,6 +23,7 @@ class JobModel extends JobEntity {
     required super.createdAt,
 
     required super.updatedAt,
+    required super.userId,
   });
 
   factory JobModel.fromMap(Map<String, dynamic> map) {
@@ -48,6 +49,7 @@ class JobModel extends JobEntity {
       createdAt: DateTime.parse(map['createdAt']),
 
       updatedAt: DateTime.parse(map['updatedAt']),
+      userId: map['userId'] ?? '',
     );
   }
 
@@ -74,6 +76,8 @@ class JobModel extends JobEntity {
       'createdAt': createdAt.toIso8601String(),
 
       'updatedAt': updatedAt.toIso8601String(),
+
+      'userId': userId,
     };
   }
 }

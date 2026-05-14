@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -106,6 +107,10 @@ class _AddJobPageState extends State<AddJobPage> {
                           status: "Applied",
 
                           notes: notesController.text,
+                          appliedDate: DateTime.now(),
+                          createdAt: DateTime.now(),
+                          updatedAt: DateTime.now(),
+                          userId: FirebaseAuth.instance.currentUser!.uid
                         ),
                       );
                     },

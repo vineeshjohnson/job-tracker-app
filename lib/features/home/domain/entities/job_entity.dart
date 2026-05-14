@@ -21,6 +21,7 @@ class JobEntity {
 
   final DateTime updatedAt;
 
+final String userId;
   const JobEntity({
     required this.id,
 
@@ -43,5 +44,6 @@ class JobEntity {
     required this.createdAt,
 
     required this.updatedAt,
+    required this.userId,
   });
 }

@@ -1,4 +1,3 @@
-
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_datasource.dart';
 
@@ -19,7 +18,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    await remoteDataSource.logout();
+  }
 
-  await remoteDataSource.logout();
-}
+  @override
+  Future<void> register({
+    required String email,
+
+    required String password,
+  }) async {
+    await remoteDataSource.register(email: email, password: password);
+  }
 }
